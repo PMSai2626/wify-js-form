@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form validation</title>
+    <style>
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="formContainer">
+        <script>
+            function createForm() {
+                const form = document.createElement('form');
+
+                
+                function createLabelAndInput(labelText, inputType, placeholder, id, maxLength) {
+                    const label = document.createElement('label');
+                    label.innerText = `${labelText}: `;
+
+                    const input = document.createElement('input');
+                    input.type = inputType;
+                    input.placeholder = placeholder;
+                    input.id = id;
+                    if (maxLength) {
+                        input.maxLength = maxLength;
+                    }
+
+                    
+                    form.appendChild(label);
+                    form.appendChild(input);
+
+                    
+                    form.appendChild(document.createElement('br'));
+                }
+
+               
+                createLabelAndInput("Name", "text", "Enter Name", "user-name", 50);
+                createLabelAndInput("Mobile number", "number", "Enter Mobile no", "mobile_no", 10);
+                createLabelAndInput("Email", "email", "Enter Email", "email");
+
+                
+                form.appendChild(document.createElement('br'));
+
+                
+                const submitButton = document.createElement('button');
+                submitButton.innerText = 'Submit';
+                submitButton.type = 'button';
+                submitButton.onclick = validateAndSubmit;
+                form.appendChild(submitButton);
+
+                
+                document.getElementById('formContainer').appendChild(form);
+            }
+
+            function validateAndSubmit() {
+                if (validateName() && validatePhone() && validateEmail()) {
+                    alert("Submitted Successfully");
+                    clearForm();
+                } else {
+                    alert("Please Enter correct details");
+                }
+            }
+
+            function clearForm() {
+                document.getElementById('user-name').value = '';
+                document.getElementById('mobile_no').value = '';
+                document.getElementById('email').value = '';
+            }
+
+            function validateName() {
+                const name = document.getElementById("user-name").value;
+                const maxLength = 50;
+
+
+
+                if (name.length > maxLength) {
+                    alert("Name should be less than 50 characters");
+                    return false;
+                }
+
+                return true;
+            }
+
+            function validatePhone() {
+                const phone = document.getElementById("mobile_no").value;
+                const maxLength = 10;
+
+                if (phone.length === 0) {
+                    alert("Phone is required");
+                    return false;
+                }
+                if (phone.length !== maxLength) {
+                    alert("Phone no should be 10 digits");
+                    return false;
+                }
+                if (!phone.match(/^[0-9]{10}$/)) {
+                    alert("Only digits allowed in phone number");
+                    return false;
+                }
+
+                return true;
+            }
+
+            function validateEmail() {
+                const email = document.getElementById("email").value;
+
+                if (email.length === 0) {
+                    alert("Email is required");
+                    return false;
+                }
+
+                if (!email.includes("@gmail.com")) {
+                    alert("Enter a correct email (should contain @gmail.com)");
+                    return false;
+                }
+
+                if (!email.match(/^[A-Za-z\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+                    alert("Enter a correct email format");
+                    return false;
+                }
+
+                return true;
+            }
+
+            // Create the form when the page loads
+            window.onload = createForm;
+        </script>
+    </div>
+    
+</body>
+</html>
